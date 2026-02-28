@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nexus — Think Beyond</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --sky:   #e8f4fd;
+      --sky2:  #cce8f8;
+      --blue:  #0071e3;
+      --blue2: #005bb5;
+      --text:  #1d1d1f;
+      --gray:  #6e6e73;
+      --card:  #ffffff;
+      --radius: 18px;
+      --font: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font);
+      color: var(--text);
+      background: #fff;
+      overflow-x: hidden;
+    }
+
+    /* ── Nav ── */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(255,255,255,0.82);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(0,0,0,.08);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 40px; height: 52px;
+    }
+    .nav-logo {
+      font-size: 22px; font-weight: 700; letter-spacing: -0.5px;
+      background: linear-gradient(135deg, #0071e3, #5e5ce6);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .nav-links { display: flex; gap: 28px; list-style: none; }
+    .nav-links a { font-size: 13px; color: var(--text); text-decoration: none; opacity: .85; transition: opacity .2s; }
+    .nav-links a:hover { opacity: 1; }
+    .nav-cta {
+      background: var(--blue); color: #fff; border: none; border-radius: 20px;
+      padding: 8px 18px; font-size: 13px; font-family: var(--font);
+      cursor: pointer; transition: background .2s;
+    }
+    .nav-cta:hover { background: var(--blue2); }
+
+    /* ── Hero ── */
+    .hero {
+      background: linear-gradient(180deg, var(--sky) 0%, #d6ecfb 60%, #f0f7fe 100%);
+      text-align: center; padding: 80px 20px 60px;
+      position: relative; overflow: hidden;
+    }
+    .hero-eyebrow {
+      font-size: 13px; font-weight: 600; letter-spacing: 0.06em;
+      text-transform: uppercase; color: var(--blue); margin-bottom: 12px;
+    }
+    .hero h1 {
+      font-size: clamp(52px, 8vw, 96px); font-weight: 700;
+      letter-spacing: -2px; line-height: 1.02; color: var(--text); margin-bottom: 18px;
+    }
+    .hero h1 span {
+      background: linear-gradient(135deg, #0071e3 0%, #5e5ce6 50%, #bf5af2 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .hero-sub {
+      font-size: 19px; color: var(--gray); max-width: 500px;
+      margin: 0 auto 32px; line-height: 1.5; font-weight: 400;
+    }
+    .hero-actions {
+      display: flex; gap: 14px; justify-content: center;
+      flex-wrap: wrap; margin-bottom: 60px;
+    }
+    .btn-primary {
+      background: var(--blue); color: #fff; border: none; border-radius: 22px;
+      padding: 14px 28px; font-size: 16px; font-family: var(--font);
+      cursor: pointer; transition: background .2s, transform .15s;
+    }
+    .btn-primary:hover { background: var(--blue2); transform: scale(1.02); }
+    .btn-secondary {
+      background: transparent; color: var(--blue); border: 1.5px solid var(--blue);
+      border-radius: 22px; padding: 14px 28px; font-size: 16px;
+      font-family: var(--font); cursor: pointer; transition: background .2s;
+    }
+    .btn-secondary:hover { background: rgba(0,113,227,.06); }
+
+    /* ── Chip ── */
+    .chip-wrap {
+      position: relative; display: inline-block;
+      width: 300px; height: 300px; margin: 0 auto;
+      animation: float 4s ease-in-out infinite;
+    }
+    @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-18px)} }
+
+    /* ── Tagline Strip ── */
+    .tagline-strip { background: #fff; text-align: center; padding: 64px 20px; }
+    .tagline-strip p {
+      font-size: clamp(28px, 4vw, 48px); font-weight: 600;
+      letter-spacing: -0.5px; line-height: 1.2; color: var(--text);
+      max-width: 800px; margin: 0 auto;
+    }
+    .tagline-strip p span { color: var(--blue); }
+
+    /* ── Highlights ── */
+    .highlights { background: #f5f5f7; padding: 64px 40px; }
+    .highlights h2 { font-size: 28px; font-weight: 600; margin-bottom: 28px; letter-spacing: -0.3px; }
+    .card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+    .card {
+      background: var(--card); border-radius: var(--radius); overflow: hidden;
+      transition: transform .25s, box-shadow .25s; cursor: default;
+    }
+    .card:hover { transform: translateY(-4px); box-shadow: 0 16px 40px rgba(0,0,0,.10); }
+    .card-visual { height: 180px; display: flex; align-items: center; justify-content: center; font-size: 64px; }
+    .card-body { padding: 20px 24px 24px; }
+    .card-body h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; letter-spacing: -0.2px; }
+    .card-body p  { font-size: 14px; color: var(--gray); line-height: 1.5; }
+
+    /* ── Feature Rows ── */
+    .feature {
+      display: flex; align-items: center; gap: 60px; padding: 80px 80px;
+      max-width: 1100px; margin: 0 auto;
+    }
+    .feature.reverse { flex-direction: row-reverse; }
+    .feature-text { flex: 1; }
+    .feature-text .eyebrow {
+      font-size: 13px; font-weight: 600; letter-spacing: .06em;
+      text-transform: uppercase; color: var(--blue); margin-bottom: 12px;
+    }
+    .feature-text h2 {
+      font-size: clamp(32px, 4vw, 48px); font-weight: 700;
+      letter-spacing: -1px; line-height: 1.1; margin-bottom: 18px;
+    }
+    .feature-text p { font-size: 17px; color: var(--gray); line-height: 1.6; max-width: 420px; }
+    .feature-visual { flex: 1; display: flex; justify-content: center; }
+    .feature-divider { border: none; border-top: 1px solid #e0e0e5; margin: 0 80px; }
+
+    /* ── Stats ── */
+    .stats {
+      background: linear-gradient(135deg, #0071e3 0%, #5e5ce6 100%);
+      color: #fff; text-align: center; padding: 80px 40px;
+    }
+    .stats h2 { font-size: 36px; font-weight: 700; letter-spacing: -0.5px; margin-bottom: 50px; }
+    .stats-grid { display: flex; flex-wrap: wrap; gap: 40px; justify-content: center; }
+    .stat { min-width: 160px; }
+    .stat-num { font-size: 56px; font-weight: 700; letter-spacing: -2px; line-height: 1; }
+    .stat-label { font-size: 15px; opacity: .8; margin-top: 6px; }
+
+    /* ── LLM Compat ── */
+    .compat { background: #f5f5f7; padding: 80px 40px; text-align: center; }
+    .compat h2 { font-size: 36px; font-weight: 700; letter-spacing: -0.5px; margin-bottom: 12px; }
+    .compat p  { font-size: 17px; color: var(--gray); margin-bottom: 48px; }
+    .llm-logos { display: flex; flex-wrap: wrap; gap: 16px; justify-content: center; }
+    .llm-pill {
+      background: #fff; border-radius: 50px; padding: 14px 28px; font-size: 15px;
+      font-weight: 500; display: flex; align-items: center; gap: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,.07); transition: box-shadow .2s, transform .2s;
+    }
+    .llm-pill:hover { box-shadow: 0 6px 20px rgba(0,0,0,.13); transform: translateY(-2px); }
+    .llm-dot { width: 10px; height: 10px; border-radius: 50%; }
+
+    /* ── Specs ── */
+    .specs-section { padding: 80px 40px; max-width: 900px; margin: 0 auto; }
+    .specs-section h2 { font-size: 36px; font-weight: 700; letter-spacing: -0.5px; margin-bottom: 40px; }
+    .spec-group { margin-bottom: 32px; }
+    .spec-group-title {
+      font-size: 12px; font-weight: 600; text-transform: uppercase;
+      letter-spacing: .08em; color: var(--gray); margin-bottom: 12px;
+      padding-bottom: 8px; border-bottom: 1px solid #e0e0e5;
+    }
+    .spec-row { display: flex; padding: 12px 0; border-bottom: 1px solid #f0f0f5; gap: 20px; }
+    .spec-key { width: 220px; flex-shrink: 0; font-size: 15px; font-weight: 500; }
+    .spec-val { font-size: 15px; color: var(--gray); }
+
+    /* ── Pricing ── */
+    .pricing {
+      background: linear-gradient(180deg, var(--sky) 0%, #eaf5fd 100%);
+      padding: 80px 40px; text-align: center;
+    }
+    .pricing h2 { font-size: 48px; font-weight: 700; letter-spacing: -1px; margin-bottom: 12px; }
+    .pricing-sub { font-size: 19px; color: var(--gray); margin-bottom: 48px; }
+    .price-cards { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; }
+    .price-card {
+      background: #fff; border-radius: 22px; padding: 36px 32px; width: 280px;
+      text-align: left; box-shadow: 0 4px 20px rgba(0,0,0,.08);
+      transition: transform .25s, box-shadow .25s;
+    }
+    .price-card:hover { transform: translateY(-6px); box-shadow: 0 16px 40px rgba(0,0,0,.13); }
+    .price-card.featured {
+      background: linear-gradient(145deg, #0071e3, #5e5ce6); color: #fff;
+    }
+    .price-tier { font-size: 13px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; opacity: .7; margin-bottom: 10px; }
+    .price-amount { font-size: 44px; font-weight: 700; letter-spacing: -1.5px; line-height: 1; margin-bottom: 4px; }
+    .price-period { font-size: 14px; opacity: .65; margin-bottom: 24px; }
+    .price-features { list-style: none; font-size: 14px; line-height: 2; }
+    .price-features li::before { content: "✓ "; font-weight: 700; }
+    .price-card:not(.featured) .price-features { color: var(--gray); }
+    .price-btn {
+      display: block; margin-top: 28px; text-align: center; padding: 12px;
+      border-radius: 50px; font-size: 15px; font-weight: 500;
+      font-family: var(--font); cursor: pointer; transition: .2s;
+    }
+    .price-card:not(.featured) .price-btn { background: var(--blue); color: #fff; border: none; }
+    .price-card:not(.featured) .price-btn:hover { background: var(--blue2); }
+    .price-card.featured .price-btn { background: rgba(255,255,255,.2); color: #fff; border: 1.5px solid rgba(255,255,255,.5); }
+    .price-card.featured .price-btn:hover { background: rgba(255,255,255,.35); }
+
+    /* ── CTA Banner ── */
+    .cta-banner { background: var(--text); color: #fff; text-align: center; padding: 80px 20px; }
+    .cta-banner h2 { font-size: clamp(36px, 5vw, 60px); font-weight: 700; letter-spacing: -1px; line-height: 1.1; margin-bottom: 16px; }
+    .cta-banner p  { font-size: 19px; opacity: .65; margin-bottom: 36px; }
+
+    /* ── Footer ── */
+    footer { background: #f5f5f7; padding: 40px; font-size: 12px; color: var(--gray); }
+    .footer-top { display: flex; flex-wrap: wrap; gap: 32px; margin-bottom: 32px; }
+    .footer-col h4 { font-size: 12px; font-weight: 600; color: var(--text); margin-bottom: 12px; }
+    .footer-col ul { list-style: none; }
+    .footer-col li { margin-bottom: 8px; }
+    .footer-col a { color: var(--gray); text-decoration: none; transition: color .2s; }
+    .footer-col a:hover { color: var(--text); }
+    .footer-bottom { border-top: 1px solid #d0d0d5; padding-top: 20px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
+
+    /* ── Scroll Reveal ── */
+    .fade-up { opacity: 0; transform: translateY(30px); transition: opacity .7s ease, transform .7s ease; }
+    .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+    /* ── Responsive ── */
+    @media (max-width: 768px) {
+      nav { padding: 0 20px; }
+      .nav-links { display: none; }
+      .feature { flex-direction: column !important; padding: 48px 24px; gap: 36px; }
+      .feature-text p { max-width: 100%; }
+      .feature-divider { margin: 0 24px; }
+      .specs-section { padding: 48px 24px; }
+      .spec-row { flex-direction: column; gap: 4px; }
+      .spec-key { width: auto; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══ NAV ═══ -->
+<nav>
+  <span class="nav-logo">Nexus</span>
+  <ul class="nav-links">
+    <li><a href="#highlights">Highlights</a></li>
+    <li><a href="#features">Features</a></li>
+    <li><a href="#compat">Compatibility</a></li>
+    <li><a href="#specs">Specs</a></li>
+    <li><a href="#pricing">Pricing</a></li>
+  </ul>
+  <button class="nav-cta">Pre-Order Now</button>
+</nav>
+
+<!-- ═══ HERO ═══ -->
+<section class="hero">
+  <p class="hero-eyebrow">Nexus Neural Interface · Gen 1</p>
+  <h1>Think <span>beyond.</span></h1>
+  <p class="hero-sub">The first neural interface chip that connects your mind directly to any large language model — instantly, securely, seamlessly.</p>
+  <div class="hero-actions">
+    <button class="btn-primary">Pre-Order — $4,999</button>
+    <button class="btn-secondary">Watch the Film ▶</button>
+  </div>
+
+  <div class="chip-wrap">
+    <svg viewBox="0 0 300 300" fill="none" xmlns="http://www.w3.org/2000/svg" width="300" height="300" style="filter:drop-shadow(0 20px 50px rgba(0,113,227,.35))">
+      <defs>
+        <linearGradient id="chip-grad" x1="80" y1="80" x2="220" y2="220" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stop-color="#1a1a2e"/><stop offset="100%" stop-color="#16213e"/>
+        </linearGradient>
+        <linearGradient id="accent" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#0071e3"/><stop offset="50%" stop-color="#5e5ce6"/><stop offset="100%" stop-color="#bf5af2"/>
+        </linearGradient>
+        <filter id="glow"><feGaussianBlur stdDeviation="3" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+      </defs>
+      <!-- Outer rings -->
+      <circle cx="150" cy="150" r="130" stroke="url(#accent)" stroke-width="1" opacity="0.3">
+        <animate attributeName="r" values="120;135;120" dur="3s" repeatCount="indefinite"/>
+        <animate attributeName="opacity" values="0.3;0.1;0.3" dur="3s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="150" cy="150" r="110" stroke="url(#accent)" stroke-width="1" opacity="0.2">
+        <animate attributeName="r" values="100;115;100" dur="3s" begin="0.5s" repeatCount="indefinite"/>
+        <animate attributeName="opacity" values="0.2;0.05;0.2" dur="3s" begin="0.5s" repeatCount="indefinite"/>
+      </circle>
+      <!-- PCB traces -->
+      <g stroke="#5e5ce6" stroke-width="1.5" opacity="0.5">
+        <line x1="110" y1="80" x2="110" y2="30"/><line x1="130" y1="80" x2="130" y2="15"/>
+        <line x1="150" y1="80" x2="150" y2="10"/><line x1="170" y1="80" x2="170" y2="15"/>
+        <line x1="190" y1="80" x2="190" y2="30"/>
+        <line x1="110" y1="220" x2="110" y2="270"/><line x1="130" y1="220" x2="130" y2="285"/>
+        <line x1="150" y1="220" x2="150" y2="290"/><line x1="170" y1="220" x2="170" y2="285"/>
+        <line x1="190" y1="220" x2="190" y2="270"/>
+        <line x1="80" y1="110" x2="30" y2="110"/><line x1="80" y1="130" x2="15" y2="130"/>
+        <line x1="80" y1="150" x2="10" y2="150"/><line x1="80" y1="170" x2="15" y2="170"/>
+        <line x1="80" y1="190" x2="30" y2="190"/>
+        <line x1="220" y1="110" x2="270" y2="110"/><line x1="220" y1="130" x2="285" y2="130"/>
+        <line x1="220" y1="150" x2="290" y2="150"/><line x1="220" y1="170" x2="285" y2="170"/>
+        <line x1="220" y1="190" x2="270" y2="190"/>
+      </g>
+      <!-- Pin dots -->
+      <g fill="url(#accent)" filter="url(#glow)">
+        <circle cx="110" cy="30" r="4"/><circle cx="130" cy="15" r="4"/><circle cx="150" cy="10" r="4"/>
+        <circle cx="170" cy="15" r="4"/><circle cx="190" cy="30" r="4"/>
+        <circle cx="110" cy="270" r="4"/><circle cx="130" cy="285" r="4"/><circle cx="150" cy="290" r="4"/>
+        <circle cx="170" cy="285" r="4"/><circle cx="190" cy="270" r="4"/>
+        <circle cx="30" cy="110" r="4"/><circle cx="15" cy="130" r="4"/><circle cx="10" cy="150" r="4"/>
+        <circle cx="15" cy="170" r="4"/><circle cx="30" cy="190" r="4"/>
+        <circle cx="270" cy="110" r="4"/><circle cx="285" cy="130" r="4"/><circle cx="290" cy="150" r="4"/>
+        <circle cx="285" cy="170" r="4"/><circle cx="270" cy="190" r="4"/>
+      </g>
+      <!-- Chip body -->
+      <rect x="78" y="78" width="144" height="144" rx="14" fill="url(#chip-grad)" stroke="#2a2a4a" stroke-width="1.5"/>
+      <!-- Inner grid -->
+      <g stroke="#0f3d6e" stroke-width="0.8" opacity="0.6">
+        <line x1="78" y1="108" x2="222" y2="108"/><line x1="78" y1="132" x2="222" y2="132"/>
+        <line x1="78" y1="150" x2="222" y2="150"/><line x1="78" y1="168" x2="222" y2="168"/>
+        <line x1="78" y1="192" x2="222" y2="192"/>
+        <line x1="108" y1="78" x2="108" y2="222"/><line x1="132" y1="78" x2="132" y2="222"/>
+        <line x1="150" y1="78" x2="150" y2="222"/><line x1="168" y1="78" x2="168" y2="222"/>
+        <line x1="192" y1="78" x2="192" y2="222"/>
+      </g>
+      <!-- Core die -->
+      <rect x="108" y="108" width="84" height="84" rx="8" fill="#0f3460"/>
+      <rect x="114" y="114" width="72" height="72" rx="6" fill="url(#accent)" opacity="0.15"/>
+      <!-- Center logo -->
+      <g filter="url(#glow)">
+        <circle cx="150" cy="150" r="22" fill="url(#accent)" opacity="0.9"/>
+        <text x="150" y="156" text-anchor="middle" font-size="18" font-weight="700" font-family="-apple-system,sans-serif" fill="white">N</text>
+      </g>
+      <!-- Pulse ring -->
+      <circle cx="150" cy="150" r="30" stroke="url(#accent)" stroke-width="2" fill="none" opacity="0.6">
+        <animate attributeName="r" values="24;38;24" dur="2s" repeatCount="indefinite"/>
+        <animate attributeName="opacity" values="0.8;0;0.8" dur="2s" repeatCount="indefinite"/>
+      </circle>
+      <!-- Corner marks -->
+      <g stroke="url(#accent)" stroke-width="2" fill="none" opacity="0.7">
+        <path d="M90 90 L90 100 M90 90 L100 90"/>
+        <path d="M210 90 L210 100 M210 90 L200 90"/>
+        <path d="M90 210 L90 200 M90 210 L100 210"/>
+        <path d="M210 210 L210 200 M210 210 L200 210"/>
+      </g>
+    </svg>
+  </div>
+</section>
+
+<!-- ═══ TAGLINE ═══ -->
+<section class="tagline-strip fade-up">
+  <p>Your brain is the interface.<br/>
+  <span>Any LLM. Zero latency. Pure thought.</span></p>
+</section>
+
+<!-- ═══ HIGHLIGHTS ═══ -->
+<section class="highlights fade-up" id="highlights">
+  <h2>Get the highlights.</h2>
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-visual" style="background:linear-gradient(135deg,#e8f4fd,#c8e8fa);">
+        <svg width="80" height="80" viewBox="0 0 80 80">
+          <circle cx="40" cy="40" r="30" fill="none" stroke="#0071e3" stroke-width="2"/>
+          <path d="M25 40 Q40 20 55 40 Q40 60 25 40Z" fill="#0071e3" opacity=".8"/>
+          <circle cx="40" cy="40" r="6" fill="#0071e3"/>
+        </svg>
+      </div>
+      <div class="card-body">
+        <h3>Neural Bandwidth: 10 Tbps</h3>
+        <p>Synaptic-speed data transfer. Thoughts translate to tokens before you finish them.</p>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-visual" style="background:linear-gradient(135deg,#f0e8ff,#ddd0ff);">
+        <svg width="80" height="80" viewBox="0 0 80 80">
+          <rect x="20" y="20" width="40" height="40" rx="8" fill="none" stroke="#5e5ce6" stroke-width="2"/>
+          <rect x="28" y="28" width="24" height="24" rx="5" fill="#5e5ce6" opacity=".7"/>
+          <circle cx="40" cy="40" r="6" fill="#fff"/>
+        </svg>
+      </div>
+      <div class="card-body">
+        <h3>NeuralOS™ Chip</h3>
+        <p>Purpose-built 3nm processor with dedicated AI inference cores and 4MB on-chip neural cache.</p>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-visual" style="background:linear-gradient(135deg,#e8fff0,#c8f5d8);">
+        <svg width="80" height="80" viewBox="0 0 80 80">
+          <path d="M40 15 L55 35 L70 35 L58 50 L63 68 L40 57 L17 68 L22 50 L10 35 L25 35Z" fill="none" stroke="#30d158" stroke-width="2"/>
+          <path d="M40 22 L52 38 L62 38 L53 50 L57 63 L40 54 L23 63 L27 50 L18 38 L28 38Z" fill="#30d158" opacity=".5"/>
+        </svg>
+      </div>
+      <div class="card-body">
+        <h3>Zero-Knowledge Privacy</h3>
+        <p>Your thoughts never leave your skull unencrypted. End-to-end cryptography at the synaptic layer.</p>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-visual" style="background:linear-gradient(135deg,#fff8e8,#fde8c0);">
+        <svg width="80" height="80" viewBox="0 0 80 80">
+          <circle cx="40" cy="40" r="25" fill="none" stroke="#ff9f0a" stroke-width="2"/>
+          <circle cx="40" cy="40" r="15" fill="#ff9f0a" opacity=".4"/>
+          <circle cx="40" cy="40" r="7" fill="#ff9f0a"/>
+          <line x1="40" y1="10" x2="40" y2="18" stroke="#ff9f0a" stroke-width="2" stroke-linecap="round"/>
+          <line x1="40" y1="62" x2="40" y2="70" stroke="#ff9f0a" stroke-width="2" stroke-linecap="round"/>
+          <line x1="10" y1="40" x2="18" y2="40" stroke="#ff9f0a" stroke-width="2" stroke-linecap="round"/>
+          <line x1="62" y1="40" x2="70" y2="40" stroke="#ff9f0a" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="card-body">
+        <h3>Always On, Never Intrusive</h3>
+        <p>8-year battery life via bio-kinetic harvesting. No charging. No cables. Just living.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FEATURES ═══ -->
+<div id="features">
+
+  <section class="feature fade-up">
+    <div class="feature-text">
+      <p class="eyebrow">Thought-to-Token™</p>
+      <h2>Your thoughts.<br/>Infinite intelligence.</h2>
+      <p>Nexus intercepts pre-verbal neural signals and routes them to the LLM of your choice in under 2 milliseconds — faster than you form the conscious thought. Ask. Receive. Know.</p>
+    </div>
+    <div class="feature-visual">
+      <svg width="320" height="260" viewBox="0 0 320 260" fill="none">
+        <defs>
+          <linearGradient id="brain-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#0071e3" stop-opacity="0.15"/>
+            <stop offset="100%" stop-color="#5e5ce6" stop-opacity="0.15"/>
+          </linearGradient>
+        </defs>
+        <path d="M160 50 C120 50,80 70,72 100 C60 120,62 150,78 165 C70 175,72 195,88 200 C95 220,115 225,130 215 C140 228,155 230,160 230 C165 230,180 228,190 215 C205 225,225 220,232 200 C248 195,250 175,242 165 C258 150,260 120,248 100 C240 70,200 50,160 50Z" fill="url(#brain-grad)" stroke="#0071e3" stroke-width="2"/>
+        <g stroke="#5e5ce6" stroke-width="1" opacity="0.5">
+          <path d="M120 100 Q140 120 160 110 Q180 100 200 120"/>
+          <path d="M100 130 Q130 145 160 140 Q190 135 220 150"/>
+          <path d="M110 160 Q140 170 160 165 Q185 160 210 175"/>
+        </g>
+        <g fill="#0071e3">
+          <circle cx="120" cy="100" r="4"><animate attributeName="opacity" values="1;0.2;1" dur="1.5s" repeatCount="indefinite"/></circle>
+          <circle cx="160" cy="110" r="4"><animate attributeName="opacity" values="0.2;1;0.2" dur="1.5s" repeatCount="indefinite"/></circle>
+          <circle cx="200" cy="120" r="4"><animate attributeName="opacity" values="1;0.2;1" dur="1.5s" begin="0.5s" repeatCount="indefinite"/></circle>
+          <circle cx="160" cy="140" r="4"><animate attributeName="opacity" values="0.2;1;0.2" dur="1.5s" begin="0.3s" repeatCount="indefinite"/></circle>
+          <circle cx="110" cy="160" r="4"><animate attributeName="opacity" values="1;0.2;1" dur="1.8s" repeatCount="indefinite"/></circle>
+          <circle cx="210" cy="175" r="4"><animate attributeName="opacity" values="0.2;1;0.2" dur="1.8s" begin="0.7s" repeatCount="indefinite"/></circle>
+        </g>
+        <rect x="140" y="125" width="40" height="40" rx="6" fill="#1a1a2e" stroke="#0071e3" stroke-width="1.5"/>
+        <text x="160" y="151" text-anchor="middle" font-size="14" font-weight="700" fill="#0071e3" font-family="-apple-system,sans-serif">N</text>
+        <g stroke="#0071e3" stroke-width="1.5" fill="none" opacity="0.7">
+          <path d="M185 90 Q200 80 215 90"><animate attributeName="opacity" values="0.7;0.2;0.7" dur="1.2s" repeatCount="indefinite"/></path>
+          <path d="M180 80 Q205 65 230 80"><animate attributeName="opacity" values="0.2;0.7;0.2" dur="1.2s" repeatCount="indefinite"/></path>
+          <path d="M175 70 Q210 50 245 70"><animate attributeName="opacity" values="0.7;0.1;0.7" dur="1.2s" begin="0.4s" repeatCount="indefinite"/></path>
+        </g>
+        <circle cx="245" cy="75" r="5" fill="#0071e3" opacity="0.8"/>
+        <text x="260" y="55" font-size="11" fill="#0071e3" font-family="-apple-system,sans-serif" font-weight="500">LLM</text>
+      </svg>
+    </div>
+  </section>
+
+  <hr class="feature-divider"/>
+
+  <section class="feature reverse fade-up">
+    <div class="feature-text">
+      <p class="eyebrow">Multi-Model Switching</p>
+      <h2>GPT. Gemini.<br/>Claude. Your call.</h2>
+      <p>Switch between models with a single neural intent. Nexus supports every major LLM and your own private deployments. Configure preferences in the companion app — then forget the app exists.</p>
+    </div>
+    <div class="feature-visual">
+      <svg width="300" height="280" viewBox="0 0 300 280" fill="none">
+        <rect x="122" y="112" width="56" height="56" rx="10" fill="#1a1a2e"/>
+        <text x="150" y="148" text-anchor="middle" font-size="20" font-weight="700" fill="white" font-family="-apple-system,sans-serif">N</text>
+        <circle cx="80"  cy="60"  r="28" fill="#10a37f" opacity="0.9"/><text x="80"  y="65"  text-anchor="middle" font-size="11" font-weight="600" fill="white" font-family="-apple-system,sans-serif">GPT-4o</text>
+        <circle cx="220" cy="60"  r="28" fill="#4285f4" opacity="0.9"/><text x="220" y="65"  text-anchor="middle" font-size="11" font-weight="600" fill="white" font-family="-apple-system,sans-serif">Gemini</text>
+        <circle cx="60"  cy="200" r="28" fill="#d97706" opacity="0.9"/><text x="60"  y="205" text-anchor="middle" font-size="11" font-weight="600" fill="white" font-family="-apple-system,sans-serif">Claude</text>
+        <circle cx="240" cy="200" r="28" fill="#7c3aed" opacity="0.9"/><text x="240" y="205" text-anchor="middle" font-size="11" font-weight="600" fill="white" font-family="-apple-system,sans-serif">Llama</text>
+        <circle cx="150" cy="248" r="22" fill="#6b7280" opacity="0.9"/><text x="150" y="253" text-anchor="middle" font-size="10" font-weight="600" fill="white" font-family="-apple-system,sans-serif">Custom</text>
+        <g stroke="#0071e3" stroke-width="1.5" stroke-dasharray="4 4" opacity="0.5">
+          <line x1="122" y1="122" x2="104" y2="82"><animate attributeName="stroke-dashoffset" values="0;-8" dur="0.8s" repeatCount="indefinite"/></line>
+          <line x1="178" y1="122" x2="196" y2="82"><animate attributeName="stroke-dashoffset" values="0;-8" dur="0.8s" repeatCount="indefinite"/></line>
+          <line x1="128" y1="158" x2="84"  y2="182"><animate attributeName="stroke-dashoffset" values="0;-8" dur="0.8s" begin="0.2s" repeatCount="indefinite"/></line>
+          <line x1="172" y1="158" x2="216" y2="182"><animate attributeName="stroke-dashoffset" values="0;-8" dur="0.8s" begin="0.2s" repeatCount="indefinite"/></line>
+          <line x1="150" y1="168" x2="150" y2="226"><animate attributeName="stroke-dashoffset" values="0;-8" dur="0.8s" begin="0.4s" repeatCount="indefinite"/></line>
+        </g>
+      </svg>
+    </div>
+  </section>
+
+  <hr class="feature-divider"/>
+
+  <section class="feature fade-up">
+    <div class="feature-text">
+      <p class="eyebrow">Neural Security</p>
+      <h2>Unhackable.<br/>Unreadable. Yours.</h2>
+      <p>Nexus uses on-chip post-quantum encryption. Your neural data is encrypted before it leaves the chip. We cannot read it. Governments cannot read it. Only you and your chosen model can.</p>
+    </div>
+    <div class="feature-visual">
+      <svg width="280" height="280" viewBox="0 0 280 280" fill="none">
+        <defs><linearGradient id="lock-grad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#30d158"/><stop offset="100%" stop-color="#0071e3"/></linearGradient></defs>
+        <path d="M140 30 L210 60 L210 140 C210 185,175 215,140 230 C105 215,70 185,70 140 L70 60 Z" fill="none" stroke="url(#lock-grad)" stroke-width="2.5"/>
+        <path d="M140 44 L196 68 L196 140 C196 177,167 203,140 215 C113 203,84 177,84 140 L84 68 Z" fill="url(#lock-grad)" opacity="0.08"/>
+        <rect x="120" y="130" width="40" height="35" rx="5" fill="url(#lock-grad)" opacity="0.8"/>
+        <path d="M128 130 L128 118 Q128 108 140 108 Q152 108 152 118 L152 130" stroke="url(#lock-grad)" stroke-width="2.5" fill="none"/>
+        <circle cx="140" cy="148" r="5" fill="white"/>
+        <g font-size="9" font-family="monospace" fill="#30d158" opacity="0.4">
+          <text x="76" y="90">1010</text><text x="96" y="100">0110</text>
+          <text x="175" y="90">1101</text><text x="155" y="100">0011</text>
+          <text x="76" y="180">0101</text><text x="96" y="190">1100</text>
+          <text x="175" y="180">1010</text><text x="155" y="190">0101</text>
+        </g>
+      </svg>
+    </div>
+  </section>
+
+</div>
+
+<!-- ═══ STATS ═══ -->
+<section class="stats fade-up">
+  <h2>Engineered for the next century.</h2>
+  <div class="stats-grid">
+    <div class="stat"><div class="stat-num">2ms</div><div class="stat-label">Neural-to-response latency</div></div>
+    <div class="stat"><div class="stat-num">10T</div><div class="stat-label">Tokens/sec throughput</div></div>
+    <div class="stat"><div class="stat-num">8yr</div><div class="stat-label">Battery-free operation</div></div>
+    <div class="stat"><div class="stat-num">100+</div><div class="stat-label">Compatible LLMs</div></div>
+    <div class="stat"><div class="stat-num">3nm</div><div class="stat-label">Process node</div></div>
+  </div>
+</section>
+
+<!-- ═══ LLM COMPAT ═══ -->
+<section class="compat fade-up" id="compat">
+  <h2>Works with every model you love.</h2>
+  <p>Nexus is model-agnostic. Use whatever intelligence moves you.</p>
+  <div class="llm-logos">
+    <div class="llm-pill"><span class="llm-dot" style="background:#10a37f"></span>GPT-4o</div>
+    <div class="llm-pill"><span class="llm-dot" style="background:#4285f4"></span>Gemini Ultra</div>
+    <div class="llm-pill"><span class="llm-dot" style="background:#d97706"></span>Claude 4</div>
+    <div class="llm-pill"><span class="llm-dot" style="background:#7c3aed"></span>Llama 4</div>
+    <div class="llm-pill"><span class="llm-dot" style="background:#ef4444"></span>Mistral</div>
+    <div class="llm-pill"><span class="llm-dot" style="background:#0ea5e9"></span>Grok</div>
+    <div class="llm-pill"><span class="llm-dot" style="background:#6b7280"></span>Private Deployments</div>
+    <div class="llm-pill"><span class="llm-dot" style="background:linear-gradient(135deg,#0071e3,#bf5af2)"></span>Your Custom Model</div>
+  </div>
+</section>
+
+<!-- ═══ SPECS ═══ -->
+<section class="specs-section fade-up" id="specs">
+  <h2>Technical Specifications</h2>
+  <div class="spec-group">
+    <div class="spec-group-title">Chip</div>
+    <div class="spec-row"><span class="spec-key">Process</span><span class="spec-val">3nm NeuralFab™ (TSMC N3P)</span></div>
+    <div class="spec-row"><span class="spec-key">Neural Cores</span><span class="spec-val">16 dedicated AI inference cores</span></div>
+    <div class="spec-row"><span class="spec-key">On-chip Memory</span><span class="spec-val">4MB neural cache, 64MB SRAM</span></div>
+    <div class="spec-row"><span class="spec-key">Dimensions</span><span class="spec-val">4mm × 4mm × 0.9mm</span></div>
+  </div>
+  <div class="spec-group">
+    <div class="spec-group-title">Performance</div>
+    <div class="spec-row"><span class="spec-key">Thought-to-Token Latency</span><span class="spec-val">≤ 2 milliseconds</span></div>
+    <div class="spec-row"><span class="spec-key">Bandwidth</span><span class="spec-val">10 Tbps neural I/O</span></div>
+    <div class="spec-row"><span class="spec-key">Token Throughput</span><span class="spec-val">10 trillion tokens/second</span></div>
+    <div class="spec-row"><span class="spec-key">Neural Channels</span><span class="spec-val">16,384 simultaneous channels</span></div>
+  </div>
+  <div class="spec-group">
+    <div class="spec-group-title">Power</div>
+    <div class="spec-row"><span class="spec-key">Power Source</span><span class="spec-val">Bio-kinetic harvesting (no battery required)</span></div>
+    <div class="spec-row"><span class="spec-key">Power Consumption</span><span class="spec-val">38 microwatts typical</span></div>
+    <div class="spec-row"><span class="spec-key">Operational Lifespan</span><span class="spec-val">8 years continuous</span></div>
+  </div>
+  <div class="spec-group">
+    <div class="spec-group-title">Security &amp; Privacy</div>
+    <div class="spec-row"><span class="spec-key">Encryption</span><span class="spec-val">AES-512 + post-quantum lattice encryption</span></div>
+    <div class="spec-row"><span class="spec-key">Key Storage</span><span class="spec-val">On-chip secure enclave, tamper-evident</span></div>
+    <div class="spec-row"><span class="spec-key">Data Retention</span><span class="spec-val">Zero — no neural data stored or transmitted in plaintext</span></div>
+    <div class="spec-row"><span class="spec-key">Compliance</span><span class="spec-val">GDPR Neural Annex, Neural Rights Act 2028</span></div>
+  </div>
+  <div class="spec-group">
+    <div class="spec-group-title">Connectivity</div>
+    <div class="spec-row"><span class="spec-key">Wireless</span><span class="spec-val">Ultra-wideband 6G (sub-THz)</span></div>
+    <div class="spec-row"><span class="spec-key">LLM Compatibility</span><span class="spec-val">100+ models via NexusConnect™ protocol</span></div>
+    <div class="spec-row"><span class="spec-key">Private Endpoint Support</span><span class="spec-val">Yes — self-hosted &amp; enterprise models</span></div>
+  </div>
+  <div class="spec-group">
+    <div class="spec-group-title">Installation</div>
+    <div class="spec-row"><span class="spec-key">Procedure</span><span class="spec-val">Minimally invasive, 30-minute outpatient</span></div>
+    <div class="spec-row"><span class="spec-key">Recovery</span><span class="spec-val">4–6 hours</span></div>
+    <div class="spec-row"><span class="spec-key">Full Activation</span><span class="spec-val">7 days neural calibration period</span></div>
+    <div class="spec-row"><span class="spec-key">Reversibility</span><span class="spec-val">Fully removable at any certified Nexus clinic</span></div>
+  </div>
+</section>
+
+<!-- ═══ PRICING ═══ -->
+<section class="pricing fade-up" id="pricing">
+  <h2>Choose your tier.</h2>
+  <p class="pricing-sub">All tiers include the Nexus chip, installation at a certified clinic, and lifetime hardware support.</p>
+  <div class="price-cards">
+    <div class="price-card">
+      <div class="price-tier">Nexus</div>
+      <div class="price-amount">$4,999</div>
+      <div class="price-period">one-time + $49/mo subscription</div>
+      <ul class="price-features">
+        <li>Nexus Gen 1 chip</li><li>3 LLM connections</li><li>10 Tbps bandwidth</li><li>8-year bio-kinetic power</li><li>Basic privacy suite</li>
+      </ul>
+      <button class="price-btn">Pre-Order</button>
+    </div>
+    <div class="price-card featured">
+      <div class="price-tier">Nexus Pro</div>
+      <div class="price-amount">$9,999</div>
+      <div class="price-period">one-time + $99/mo subscription</div>
+      <ul class="price-features">
+        <li>Nexus Gen 1 Pro chip</li><li>Unlimited LLM connections</li><li>100+ Tbps bandwidth</li><li>Priority routing &amp; &lt;2ms latency</li><li>Zero-knowledge privacy suite</li><li>Private model support</li>
+      </ul>
+      <button class="price-btn">Pre-Order</button>
+    </div>
+    <div class="price-card">
+      <div class="price-tier">Nexus Enterprise</div>
+      <div class="price-amount">Custom</div>
+      <div class="price-period">volume pricing available</div>
+      <ul class="price-features">
+        <li>Bulk implant programs</li><li>Private LLM deployment</li><li>Dedicated neural infrastructure</li><li>SLA &amp; 24/7 support</li><li>Compliance &amp; audit packages</li>
+      </ul>
+      <button class="price-btn">Contact Sales</button>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ CTA ═══ -->
+<section class="cta-banner fade-up">
+  <h2>The future is already<br/>inside you.</h2>
+  <p>Be among the first 10,000 humans to think with the most powerful AI on the planet.</p>
+  <button class="btn-primary" style="font-size:18px;padding:16px 36px;">Join the Waitlist</button>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer>
+  <div class="footer-top">
+    <div class="footer-col"><h4>Nexus</h4><ul><li><a href="#">About</a></li><li><a href="#">Newsroom</a></li><li><a href="#">Careers</a></li><li><a href="#">Investors</a></li></ul></div>
+    <div class="footer-col"><h4>Product</h4><ul><li><a href="#">Nexus Chip</a></li><li><a href="#">NexusConnect™</a></li><li><a href="#">Companion App</a></li><li><a href="#">Developer API</a></li></ul></div>
+    <div class="footer-col"><h4>Medical</h4><ul><li><a href="#">Clinical Trials</a></li><li><a href="#">Safety Data</a></li><li><a href="#">Find a Clinic</a></li><li><a href="#">Removal Procedure</a></li></ul></div>
+    <div class="footer-col"><h4>Legal &amp; Privacy</h4><ul><li><a href="#">Neural Data Policy</a></li><li><a href="#">Terms of Service</a></li><li><a href="#">Neural Rights</a></li><li><a href="#">Regulatory Filings</a></li></ul></div>
+  </div>
+  <div class="footer-bottom">
+    <span>Copyright © 2026 Nexus Neurotechnology, Inc. All rights reserved.</span>
+    <span>Nexus is not affiliated with Neuralink or any other neural interface company.</span>
+  </div>
+</footer>
+
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) entry.target.classList.add('visible');
+    });
+  }, { threshold: 0.12 });
+
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
